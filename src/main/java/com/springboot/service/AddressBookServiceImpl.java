@@ -34,8 +34,7 @@ public class AddressBookServiceImpl implements IAddressBookService {
     public PersonDetails updateAddressbookData(int personId, AddressBookDTO addressbookDTO) {
 
        PersonDetails personDetails=this.getAddressbookDataById(personId);
-       personDetails.setName(addressbookDTO.name);
-       personDetails.setPhNumber(addressbookDTO.phNumber);
+      personDetails.updateAddressBookdata(addressbookDTO);
        personDetailsList.set(personId -1,personDetails);
         return personDetails;
     }
