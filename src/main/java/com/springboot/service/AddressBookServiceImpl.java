@@ -3,18 +3,24 @@ package com.springboot.service;
 import com.springboot.dto.AddressBookDTO;
 import com.springboot.exception.AddressBookException;
 import com.springboot.model.PersonDetails;
+import com.springboot.repository.AddressBookRepo;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class AddressBookServiceImpl implements IAddressBookService {
+    @Autowired
+    AddressBookRepo addressBookRepo;
     List<PersonDetails> personDetailsList=new ArrayList<>();
     @Override
     public List<PersonDetails> getAddressbookData() {
 
-        return personDetailsList;
+        return addressBookRepo.findAll();
     }
 
     @Override
@@ -26,8 +32,9 @@ public class AddressBookServiceImpl implements IAddressBookService {
     public PersonDetails createAddressbookData(AddressBookDTO addressbookDTO) {
         PersonDetails personDetails = null;
        personDetails=new PersonDetails(personDetailsList.size() +1,addressbookDTO);
+        log.debug("AddressbookData: "+personDetails.toString());
        personDetailsList.add(personDetails);
-        return personDetails;
+        return addressBookRepo.save(personDetails);
     }
 
     @Override
@@ -36,16 +43,14 @@ public class AddressBookServiceImpl implements IAddressBookService {
        PersonDetails personDetails=this.getAddressbookDataById(personId);
       personDetails.updateAddressBookdata(addressbookDTO);
        personDetailsList.set(personId -1,personDetails);
-        return personDetails;
+        return addressBookRepo.save(personDetails);
     }
 
     @Override
     public void deleteAddressbookData(int personId) {
-        int i=1;
-        personDetailsList.remove(personId -1);
-        for (PersonDetails personDetails:personDetailsList){
-            personDetails.setPersonId(i++);
-        }
+
+        addressBookRepo.deleteById(personId);
+
 
     }
 }

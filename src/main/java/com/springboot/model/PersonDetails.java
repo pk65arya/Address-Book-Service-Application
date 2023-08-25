@@ -1,10 +1,15 @@
 package com.springboot.model;
 
 import com.springboot.dto.AddressBookDTO;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
+@Entity
+@Table(name = "contact-table")
 public class PersonDetails {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int personId;
     private String firstName;
     private String lastName;
@@ -19,7 +24,9 @@ public class PersonDetails {
         this.personId = personId;
         this.updateAddressBookdata(addressBookDTO);
     }
+public PersonDetails(){
 
+}
     public void updateAddressBookdata(AddressBookDTO addressbookDTO) {
         this.firstName = addressbookDTO.firstName;
         this.lastName = addressbookDTO.lastName;
